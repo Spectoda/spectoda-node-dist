@@ -1,12 +1,10 @@
-# spectoda-node-dist
-Production compiled version of SpectodaNode
-
-## TODO
-add here `node_modules` to make it runnable by default
+# spectoda-pws400k
+A service for connecting spectoda controller to PWS400K printer.
 
 ## HOW to make it run
 ```bash
-git clone https://github.com/Spectoda/spectoda-node-dist.git
+git clone https://github.com/Spectoda/spectoda-pws400k.git
+cd spectoda-pws400k
 npm install
 node main.js
 ```
