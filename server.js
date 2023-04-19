@@ -46,19 +46,19 @@ app.post("/connect", async (req, res) => {
         }
         if (mac) {
             //@ts-ignore
-            remember && fs_1.default.writeFileSync("mac.txt", mac);
-            const result = await communication_1.spectodaDevice.connect([{ mac: mac }]);
+            const result = await communication_1.spectodaDevice.connect([{ mac: mac }], true, null, null, false, "", true);
+            remember && fs_1.default.writeFileSync("assets/mac.txt", mac);
             return res.json({ status: "success", result: result });
         }
         if (name) {
             const controllers = await communication_1.spectodaDevice.scan([{ name: name }]);
-            controllers.length != 0 && remember && fs_1.default.writeFileSync("mac.txt", controllers[0].mac);
-            const result = await communication_1.spectodaDevice.connect(controllers);
+            controllers.length != 0 && controllers[0].mac && remember && fs_1.default.writeFileSync("assets/mac.txt", controllers[0].mac);
+            const result = await communication_1.spectodaDevice.connect(controllers, true, null, null, false, "", true);
             return res.json({ status: "success", result: result });
         }
         const controllers = await communication_1.spectodaDevice.scan([{}]);
-        controllers.length != 0 && remember && fs_1.default.writeFileSync("mac.txt", controllers[0].mac);
-        const result = await communication_1.spectodaDevice.connect(controllers);
+        controllers.length != 0 && controllers[0].mac && remember && fs_1.default.writeFileSync("assets/mac.txt", controllers[0].mac);
+        const result = await communication_1.spectodaDevice.connect(controllers, true, null, null, false, "", true);
         return res.json({ status: "success", result: result });
     }
     catch (error) {
