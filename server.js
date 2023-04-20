@@ -186,6 +186,7 @@ app.use(function (err, req, res, next) {
     res.status(500);
     res.send("Oops, something went wrong.");
 });
+app.use("/assets", express_1.default.static('assets'));
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/`);
 });
