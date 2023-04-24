@@ -81,6 +81,9 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     catchEvent($stdby).emitAs($s_rst).setValue(100%).emitAs($s_std).setValue(0%).emitAs($v_err);
     catchEvent($pause).emitAs($s_rst).setValue(100%).emitAs($s_pau);
     catchEvent($done).emitAs($s_rst).setValue(100%).emitAs($s_don).setValue(0%).emitAs($v_err);
+    catchEvent($kdisc).emitAs($s_rst).setValue(100%).emitAs($s_off);
+    catchEvent($kshut).emitAs($s_rst).setValue(100%).emitAs($s_off);
+    catchEvent($kread).emitAs($s_rst).setValue(100%).emitAs($s_std);
     catchEvent($s_rst).setValue(0%).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau).emitAs($s_don);
     // Animation Value State
     catchEvent($booti).emitAs($v_boo);
