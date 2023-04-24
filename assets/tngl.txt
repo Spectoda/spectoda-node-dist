@@ -67,7 +67,9 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
     catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
     catchEvent($DISCO).setValue(100%).emitAs($disco);
-    catchEvent($kread).emitAs($reset);
+    catchEvent($kread).emitAs($reset).emitAs($stdby);
+    catchEvent($kdisc).emitAs($off);
+    catchEvent($kshut).emitAs($off);
     // Notification states
     catchEvent($test).emitAs($s_rst).setValue(100%).emitAs($s_tes);
     catchEvent($busy).emitAs($s_rst).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro);
