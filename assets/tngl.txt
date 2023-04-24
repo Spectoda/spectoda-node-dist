@@ -67,6 +67,7 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
     catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
     catchEvent($DISCO).setValue(100%).emitAs($disco);
+    catchEvent($kread).emitAs($reset);
     // Notification states
     catchEvent($test).emitAs($s_rst).setValue(100%).emitAs($s_tes);
     catchEvent($busy).emitAs($s_rst).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro);
@@ -81,7 +82,7 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     catchEvent($stdby).emitAs($s_rst).setValue(100%).emitAs($s_std);
     catchEvent($pause).emitAs($s_rst).setValue(100%).emitAs($s_pau);
     catchEvent($done).emitAs($s_rst).setValue(100%).emitAs($s_don);
-    catchEvent($s_rst).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau).emitAs($s_don);
+    catchEvent($s_rst).setValue(0%).emitAs($reset).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau).emitAs($s_don);
     // Animation Value State
     catchEvent($booti).emitAs($v_boo);
     catchEvent($disco).emitAs($v_dis);
@@ -91,6 +92,8 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     catchEvent($color).emitAs($v_col);
     catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog);
     catchEvent($error).setValue(100%).emitAs($v_err);
+
+    catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo);
 
     const notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
     const notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
@@ -220,11 +223,6 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     }).modifyBrightness(&notification_state_done);
   });
   // Disconnected
-    siftCanvases({ canvas($ALL, $__STR, 1s); }, {
-      subLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&value_disconnected);
-    });
     siftSegments({ segment($front); }, {
       addLayer(0s, Infinity, {
         addDrawing(10s, Infinity, animPlasmaShot(0.5s, #ffffff, 25%).animPlasmaShot(-0.5s, #ffffff, 25%).animNone(1s));
