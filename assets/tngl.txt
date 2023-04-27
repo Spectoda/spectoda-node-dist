@@ -20,6 +20,10 @@ defDevice($AA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $POR
   negate->[0x00]event;
 });
 
+defCanvas($TOP, {
+  segment($por_T);
+});
+
 defCanvas($ALL, {
   segment($front);
   segment($porta);
@@ -63,39 +67,37 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     const SMOOTING_LIGHT = 1s;
     const SMOOTING_TRANSITION = 1s;
     // Booting conditions
-    catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color);
+    catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
     catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
     catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
     catchEvent($DISCO).setValue(100%).emitAs($disco);
     catchEvent($kread).emitAs($reset).emitAs($stdby);
     catchEvent($kdisc).emitAs($off);
     catchEvent($kshut).emitAs($off);
-    // Notification states
-    catchEvent($test).emitAs($s_rst).setValue(100%).emitAs($s_tes);
-    catchEvent($busy).emitAs($s_rst).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro);
-    catchEvent($clean).emitAs($s_rst).setValue(100%).emitAs($s_hom);
-    catchEvent($calib).emitAs($s_rst).setValue(100%).emitAs($s_hom);
-    catchEvent($heati).emitAs($s_rst).setValue(100%).emitAs($s_hea);
-    catchEvent($homin).emitAs($s_rst).setValue(100%).emitAs($s_hom);
-    catchEvent($level).emitAs($s_rst).setValue(100%).emitAs($s_hom);
-    catchEvent($meshi).emitAs($s_rst).setValue(100%).emitAs($s_hom);
-    catchEvent($off).emitAs($s_rst).setValue(100%).emitAs($s_off);
-    catchEvent($print).emitAs($s_rst).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro);
-    catchEvent($stdby).emitAs($s_rst).setValue(100%).emitAs($s_std);
-    catchEvent($pause).emitAs($s_rst).setValue(100%).emitAs($s_pau);
-    catchEvent($done).emitAs($s_rst).setValue(100%).emitAs($s_don);
-    catchEvent($s_rst).setValue(0%).emitAs($reset).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau).emitAs($s_don);
     // Animation Value State
     catchEvent($booti).emitAs($v_boo);
     catchEvent($disco).emitAs($v_dis);
     catchEvent($toggl).emitAs($v_tog).emitAs($v_lig);
     catchEvent($light).emitAs($v_lig);
-    catchEvent($progr).emitAs($v_pro);
+    catchEvent($progr).emitAs($v_pro).emitAs($busy);
     catchEvent($color).emitAs($v_col);
     catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog);
     catchEvent($error).setValue(100%).emitAs($v_err);
-
-    catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo);
+    // Notification states
+    catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes);
+    catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro);
+    catchEvent($clean).emitAs($reset).setValue(100%).emitAs($s_hom);
+    catchEvent($calib).emitAs($reset).setValue(100%).emitAs($s_hom);
+    catchEvent($heati).emitAs($reset).setValue(100%).emitAs($s_hea);
+    catchEvent($homin).emitAs($reset).setValue(100%).emitAs($s_hom);
+    catchEvent($level).emitAs($reset).setValue(100%).emitAs($s_hom);
+    catchEvent($meshi).emitAs($reset).setValue(100%).emitAs($s_hom);
+    catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off);
+    catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_hea).setValue(0%).emitAs($v_pro);
+    catchEvent($stdby).emitAs($reset).setValue(100%).emitAs($s_std);
+    catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau);
+    catchEvent($done).emitAs($reset).setValue(100%).emitAs($s_don);
+    catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau).emitAs($s_don);
 
     const notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
     const notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
@@ -233,7 +235,7 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
     addLayer(0s, Infinity, {
       siftSegments({ segment($porta); segment($front); }, {
         addLayer(0s, 10s, {
-          addDrawing(0s, 10s, animColorGradient5(6s, #000000, #0000ff, #0000ff, #0000ff, #0000ff, 100%, 100%).animFade(0.1s, #0000ff, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
+          addDrawing(0s, 10s, animColorGradient5(6s, #000000, &value_color, &value_color, &value_color, &value_color, 100%, 100%).animFade(0.1s, &value_color, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
           scaDrawing(0s, 10s, animLoadingBar(6s, #ffffff, #000000).animNone(Infinity));
         }).modifyFadeOut(1s);
       });
@@ -241,7 +243,7 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
         addDrawing(10s, Infinity, animFade(1s, #000000, #ffffff).animFade(1s, #ffffff, #000000));
       });
       siftSegments({ segment($front); }, {
-        addDrawing(10s, Infinity, animPlasmaShot(0.5s, #ffffff, 25%).animPlasmaShot(-0.5s, #ffffff, 25%).animNone(1s));
+        addDrawing(10s, Infinity, animPlasmaShot(1s, #3b3b3b, 25%).animPlasmaShot(-1s, #3b3b3b, 25%).animNone(2s));
       });
     }).modifyBrightness(&value_booting);
   // Connected animation
@@ -267,14 +269,16 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
       });
     }).modifyBrightness(&value_error);
   // Disconnected
-    siftCanvases({ canvas($ALL, $__STR, 1s); }, {
+    siftCanvases({ canvas($ALL, $__STR, 1s); canvas($TOP, $__STR, 1s); }, {
       subLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
       }).modifyBrightness(&value_disconnected);
     });
     siftSegments({ segment($front); }, {
       addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animPlasmaShot(1s, #3b3b3b, 25%).animPlasmaShot(-1s, #3b3b3b, 25%).animNone(2s));
+        interactive<0x01>(0s, Infinity, $disco, {
+          addDrawing(0s, 12s, animPlasmaShot(1s, #3b3b3b, 25%).animPlasmaShot(-1s, #3b3b3b, 25%).animNone(2s));
+        });
       }).modifyBrightness(&value_disconnected);
     });
   // Lightning Button
