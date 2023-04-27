@@ -62,233 +62,242 @@ defSegment($por_T, 0x00, { slice($porta, 24px, 20px, 1px); });
 defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
 
 // This is a comment
-  // This is a comment
-    // Constants
-    const SMOOTING_LIGHT = 1s;
-    const SMOOTING_TRANSITION = 1s;
-    // Booting conditions
-    catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
-    catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
-    catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
-    catchEvent($DISCO).setValue(100%).emitAs($disco);
-    catchEvent($kread).emitAs($reset).emitAs($stdby);
-    catchEvent($kdisc).emitAs($off);
-    catchEvent($kshut).emitAs($off);
-    // Animation Value State
-    catchEvent($booti).emitAs($v_boo);
-    catchEvent($disco).emitAs($v_dis);
-    catchEvent($toggl).emitAs($v_tog).emitAs($v_lig);
-    catchEvent($light).emitAs($v_lig);
-    catchEvent($progr).emitAs($v_pro).emitAs($busy);
-    catchEvent($color).emitAs($v_col);
-    catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog);
-    catchEvent($error).setValue(100%).emitAs($v_err);
-    // Notification states
-    catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes);
-    catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro);
-    catchEvent($clean).emitAs($reset).setValue(100%).emitAs($s_hom);
-    catchEvent($calib).emitAs($reset).setValue(100%).emitAs($s_hom);
-    catchEvent($heati).emitAs($reset).setValue(100%).emitAs($s_hea);
-    catchEvent($homin).emitAs($reset).setValue(100%).emitAs($s_hom);
-    catchEvent($level).emitAs($reset).setValue(100%).emitAs($s_hom);
-    catchEvent($meshi).emitAs($reset).setValue(100%).emitAs($s_hom);
-    catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off);
-    catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_hea).setValue(0%).emitAs($v_pro);
-    catchEvent($stdby).emitAs($reset).setValue(100%).emitAs($s_std);
-    catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau);
-    catchEvent($done).emitAs($reset).setValue(100%).emitAs($s_don);
-    catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau).emitAs($s_don);
 
-    const notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
-    const notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
-    const notification_state_heating = genSmoothOut(genLastEventParam($s_hea), &SMOOTING_TRANSITION);
-    const notification_state_homing = genSmoothOut(genLastEventParam($s_hom), &SMOOTING_TRANSITION);
-    const notification_state_off = genSmoothOut(genLastEventParam($s_off), &SMOOTING_TRANSITION);
-    const notification_state_standby = genSmoothOut(genLastEventParam($s_std), &SMOOTING_TRANSITION);
-    const notification_state_pause = genSmoothOut(genLastEventParam($s_pau), &SMOOTING_TRANSITION);
-    const notification_state_done = genSmoothOut(genLastEventParam($s_don), &SMOOTING_TRANSITION);
+// This is a comment
+  // Constants
+  const SMOOTING_LIGHT = 1s;
+  const SMOOTING_TRANSITION = 1s;
+  // Booting conditions
+  catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
+  catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
+  catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
+  catchEvent($DISCO).setValue(100%).emitAs($disco);
+  catchEvent($kread).emitAs($reset).emitAs($stdby);
+  catchEvent($kdisc).emitAs($off);
+  catchEvent($kshut).emitAs($off);
+  // Homing
+  catchEvent($clean).emitAs($PROCE).emitAs($_DONE);
+  catchEvent($calib).emitAs($PROCE).emitAs($_DONE);
+  catchEvent($homin).emitAs($PROCE).emitAs($_DONE);
+  catchEvent($level).emitAs($PROCE).emitAs($_DONE);
+  catchEvent($meshi).emitAs($PROCE).emitAs($_DONE);
+  catchEvent($PROCE).emitAs($reset).setValue(100%).emitAs($s_hom);
+  // Notification states
+  catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes).emitAs($_DONE).emitAs($_BUSY);
+  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro).emitAs($_DONE);
+  catchEvent($heati).emitAs($reset).setValue(100%).emitAs($s_hea).emitAs($_DONE).emitAs($BUSY);
+  catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_bus);
+  catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off).emitAs($_DONE);
+  catchEvent($stdby).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($_DONE).emitAs($_BUSY);
+  catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau);
+  // clear done or busy
+  catchEvent($_DONE).setValue(0%).emitAs($v_don);
+  catchEvent($_BUSY).setValue(0%).emitAs($v_bus);
+  catchEvent($BUSY).setValue(100%).emitAs($v_bus);
+  // Animation Value State
+  catchEvent($booti).emitAs($v_boo);
+  catchEvent($disco).emitAs($v_dis);
+  catchEvent($toggl).emitAs($v_tog).emitAs($v_lig);
+  catchEvent($light).emitAs($v_lig);
+  catchEvent($progr).emitAs($v_pro).emitAs($reset).setValue(100%).emitAs($s_bus);
+  catchEvent($color).emitAs($v_col);
+  catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog);
+  catchEvent($busy).setValue(100%).emitAs($v_bus);
+  catchEvent($print).setValue(100%).emitAs($v_bus);
+  catchEvent($done).setValue(100%).emitAs($v_don);
+  catchEvent($error).setValue(100%).emitAs($v_err);
 
-    const value_booting = genSmoothOut(genLastEventParam($v_boo), &SMOOTING_TRANSITION);
-    const value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
-    const value_progress = genSmoothOut(genLastEventParam($v_pro), &SMOOTING_TRANSITION);
-    const value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
-    const value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 0%, 100%), &SMOOTING_TRANSITION);
-    const value_light = genSmoothOut(genLastEventParam($v_lig), &SMOOTING_TRANSITION);
-    const value_error = genSmoothOut(genLastEventParam($v_err), &SMOOTING_TRANSITION);
-    // State machine
-  // User Animations on portal
-  siftSegments({ segment($porta); }, {
-    addLayer(0s, Infinity, {
-      // Printer test animation
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(1s, #ff0000).animFill(1s, #00ff00).animFill(1s, #0000ff).animFill(1s, #ff00ff).animFill(1s, #ffff00).animFill(1s, #00ffff).animFill(1s, #ffffff).animFill(1s, #000000));
-        addDrawing(0s, Infinity, animPlasmaShot(8s, #ffffff, 1%));
-      }).modifyBrightness(&notification_state_testing);
-      // Printer busy animation
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-        scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
-        scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
-      }).modifyBrightness(&notification_state_busy);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-        scaLayer(0s, Infinity, {
-          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-          subDrawing(0s, Infinity, animPlasmaShot(60s, #ffffff, 3%));
-          subDrawing(0s, Infinity, animPlasmaShot(-40s, #ffffff, 3%));
-        });
-      }).modifyBrightness(&notification_state_heating);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-      }).modifyBrightness(&notification_state_homing);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-        scaLayer(0s, Infinity, {
-          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-          subDrawing(0s, Infinity, animPlasmaShot(60s, #ffffff, 3%));
-          subDrawing(0s, Infinity, animPlasmaShot(-40s, #ffffff, 3%));
-        });
-      }).modifyBrightness(&notification_state_standby);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-        scaLayer(0s, Infinity, {
-          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-          subDrawing(0s, Infinity, animPlasmaShot(60s, #ffffff, 3%));
-          subDrawing(0s, Infinity, animPlasmaShot(-40s, #ffffff, 3%));
-        });
-      }).modifyBrightness(&notification_state_pause);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&notification_state_done);
-    }).modifyBrightness(&value_brightness);
-  });
-  siftSegments({ segment($por_L); segment($por_T); segment($por_R); }, {
-    scaLayer(0s, Infinity, {
-      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      subLayer(0s, Infinity, {
-        siftSegments({ segment($por_L); segment($por_R); }, {
-          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-        });
-      }).modifyBrightness(&value_error);
-      subLayer(0s, Infinity, {
-        siftSegments({ segment($por_L); segment($por_R); }, {
-          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-        });
-      }).modifyBrightness(&notification_state_done);
-    });
-  });
-  // Notification States
-  siftSegments({ segment($front); }, {
-    // Printer test
+  catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau);
+
+  const notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
+  const notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
+  const notification_state_heating = genSmoothOut(genLastEventParam($s_hea), &SMOOTING_TRANSITION);
+  const notification_state_homing = genSmoothOut(genLastEventParam($s_hom), &SMOOTING_TRANSITION);
+  const notification_state_off = genSmoothOut(genLastEventParam($s_off), &SMOOTING_TRANSITION);
+  const notification_state_standby = genSmoothOut(genLastEventParam($s_std), &SMOOTING_TRANSITION);
+  const notification_state_pause = genSmoothOut(genLastEventParam($s_pau), &SMOOTING_TRANSITION);
+
+  const value_booting = genSmoothOut(genLastEventParam($v_boo), &SMOOTING_TRANSITION);
+  const value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
+  const value_progress = genSmoothOut(mapValue(genLastEventParam($v_pro), 5%, 100%, 0%, 95%), 0.001s);
+  const value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
+  const value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 0%, 100%), &SMOOTING_TRANSITION);
+  const value_busy = genSmoothOut(genLastEventParam($v_bus), &SMOOTING_TRANSITION);
+  const value_light = genSmoothOut(genLastEventParam($v_lig), &SMOOTING_TRANSITION);
+  const value_done = genSmoothOut(genLastEventParam($v_don), &SMOOTING_TRANSITION);
+  const value_error = genSmoothOut(genLastEventParam($v_err), &SMOOTING_TRANSITION);
+  // State machine
+// User Animations on portal
+siftSegments({ segment($porta); }, {
+  addLayer(0s, Infinity, {
+    const show_standby = mapValue(value_busy, 0%, 80%, 100%, 0%);
+    const show_busy = mapValue(value_busy, 20%, 100%, 0%, 100%);
+    // Printer test animation
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(1s, #ff0000).animFill(1s, #00ff00).animFill(1s, #0000ff).animFill(1s, #ff00ff).animFill(1s, #ffff00).animFill(1s, #00ffff).animFill(1s, #ffffff).animFill(1s, #000000));
       addDrawing(0s, Infinity, animPlasmaShot(8s, #ffffff, 1%));
     }).modifyBrightness(&notification_state_testing);
-    // Printer busy notification
+    // Printer states colors
     addLayer(0s, Infinity, {
-      const progress_time = mapValue(value_progress, 0%, 100%, 0s, 90s);
+      addDrawing(0s, Infinity, animFill(Infinity, &value_color));
+    }).modifyBrightness(&notification_state_busy);
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, &value_color));
+    }).modifyBrightness(&notification_state_heating);
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, &value_color));
+    }).modifyBrightness(&notification_state_homing);
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, &value_color));
+    }).modifyBrightness(&notification_state_standby);
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, &value_color));
+    }).modifyBrightness(&notification_state_pause);
+    // Mask
+    scaLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #0d0d0d).animFill(Infinity, &value_color));
+        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+        scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
+        scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
+      }).modifyBrightness(&show_busy);
+      addLayer(0s, Infinity, {
+        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+        subDrawing(0s, Infinity, animPlasmaShot(60s, #ffffff, 3%));
+        subDrawing(0s, Infinity, animPlasmaShot(-40s, #ffffff, 3%));
+      }).modifyBrightness(&show_standby);
+    });
+  }).modifyBrightness(&value_brightness);
+});
+// Notification States
+siftSegments({ segment($front); }, {
+  // Printer test
+  addLayer(0s, Infinity, {
+    addDrawing(0s, Infinity, animFill(1s, #ff0000).animFill(1s, #00ff00).animFill(1s, #0000ff).animFill(1s, #ff00ff).animFill(1s, #ffff00).animFill(1s, #00ffff).animFill(1s, #ffffff).animFill(1s, #000000));
+    addDrawing(0s, Infinity, animPlasmaShot(8s, #ffffff, 1%));
+  }).modifyBrightness(&notification_state_testing);
+  // Printer busy notification
+  addLayer(0s, Infinity, {
+    const show_heating = mapValue(value_progress, 0%, 0.001%, 100%, 0%);
+    const show_progress = mapValue(value_progress, 0.001%, 0.002%, 0%, 100%);
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animColorRoll(5s, #ff2200, #ff2200));
+      scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
+      scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
+    }).modifyBrightness(&show_heating);
+    addLayer(0s, Infinity, {
+      const progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
+      const backgroud = addValues(#0a0a0a, mulValues(value_color, #090909));
+      addLayer(0s, Infinity, {
+        addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, &backgroud).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
       scaLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animFill(Infinity, #6b6b6b));
         addDrawing(0s, Infinity, animPlasmaShot(10s, #ffffff, 1%));
       });
-    }).modifyBrightness(&notification_state_busy);
-    // Printer heating notification
+    }).modifyBrightness(&show_progress);
+  }).modifyBrightness(&notification_state_busy);
+  // Printer heating notification
+  addLayer(0s, Infinity, {
+    addDrawing(0s, Infinity, animColorRoll(5s, #ff2200, #ff2200));
+    scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
+    scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
+  }).modifyBrightness(&notification_state_heating);
+  // Printer homing notification
+  addLayer(0s, Infinity, {
+    addDrawing(0s, Infinity, animColorGradient5(5s, #000000, #000000, #ffffff, #000000, #000000, 100%, 100%));
+  }).modifyBrightness(&notification_state_homing);
+  // Printer off notification
+  addLayer(0s, Infinity, {
+  }).modifyBrightness(&notification_state_off);
+  // Printer standby notification
+  addLayer(0s, Infinity, {
     addLayer(0s, Infinity, {
-      addDrawing(0s, Infinity, animColorRoll(5s, #ff2200, #ff2200));
-      scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
-      scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
-    }).modifyBrightness(&notification_state_heating);
-    // Printer homing notification
+      addDrawing(0s, Infinity, animFill(Infinity, &value_color));
+    }).modifyBrightness(3%);
+  }).modifyBrightness(&notification_state_standby);
+  // Printer pause notification
+  addLayer(0s, Infinity, {
+    const progress_time = mapValue(value_progress, 0%, 100%, 0s, 90s);
     addLayer(0s, Infinity, {
-      addDrawing(0s, Infinity, animColorGradient5(5s, #000000, #000000, #ffffff, #000000, #000000, 100%, 100%));
-    }).modifyBrightness(&notification_state_homing);
-    // Printer off notification
-    addLayer(0s, Infinity, {
-    }).modifyBrightness(&notification_state_off);
-    // Printer standby notification
-    addLayer(0s, Infinity, {
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-      }).modifyBrightness(3%);
-    }).modifyBrightness(&notification_state_standby);
-    // Printer pause notification
-    addLayer(0s, Infinity, {
-      const progress_time = mapValue(value_progress, 0%, 100%, 0s, 90s);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
-      }).modifyTimeSet(&progress_time);
-    }).modifyBrightness(&notification_state_pause);
-    // Printer done notification
-    addLayer(0s, Infinity, {
+      addDrawing(0.1s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
+    }).modifyTimeSet(&progress_time);
+    scaDrawing(0s, Infinity, animFade(2s, #000000, #ffffff).animFill(0.5s, #ffffff).animFade(2s, #ffffff, #000000));
+  }).modifyBrightness(&notification_state_pause);
+});
+// Booting
+  siftCanvases({ canvas($ALL, $__STR, 1s); }, {
+    subLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-    }).modifyBrightness(&notification_state_done);
-  });
-  // Booting
-    siftCanvases({ canvas($ALL, $__STR, 1s); }, {
-      subLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&value_booting);
-    });
-    addLayer(0s, Infinity, {
-      siftSegments({ segment($porta); segment($front); }, {
-        addLayer(0s, 10s, {
-          addDrawing(0s, 10s, animColorGradient5(6s, #000000, &value_color, &value_color, &value_color, &value_color, 100%, 100%).animFade(0.1s, &value_color, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
-          scaDrawing(0s, 10s, animLoadingBar(6s, #ffffff, #000000).animNone(Infinity));
-        }).modifyFadeOut(1s);
-      });
-      siftSegments({ segment($por_T); }, {
-        addDrawing(10s, Infinity, animFade(1s, #000000, #ffffff).animFade(1s, #ffffff, #000000));
-      });
-      siftSegments({ segment($front); }, {
-        addDrawing(10s, Infinity, animPlasmaShot(1s, #3b3b3b, 25%).animPlasmaShot(-1s, #3b3b3b, 25%).animNone(2s));
-      });
     }).modifyBrightness(&value_booting);
-  // Connected animation
-    interactive<0x01>(0s, Infinity, $CONNE, {
-      siftSegments({ segment($porta); segment($front); }, {
-        addLayer(0.2s, 2s, {
-          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-        }).modifyFadeIn(0.2s).modifyFadeOut(1.5s);
-      });
+  });
+  addLayer(0s, Infinity, {
+    siftSegments({ segment($porta); segment($front); }, {
+      addLayer(0s, 10s, {
+        addDrawing(0s, 10s, animColorGradient5(6s, #000000, &value_color, &value_color, &value_color, &value_color, 100%, 100%).animFade(0.1s, &value_color, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
+        scaDrawing(0s, 10s, animLoadingBar(6s, #ffffff, #000000).animNone(Infinity));
+      }).modifyFadeOut(1s);
     });
-  // Error
-    siftCanvases({ canvas($ALL, $__STR, 1s); }, {
-      subLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&value_error);
-    });
-    addLayer(0s, Infinity, {
-      siftSegments({ segment($porta); }, {
-        addDrawing(0s, Infinity, animFade(0.05s, #000000, #ff0000).animFill(0.1s, #ff0000).animFade(0.05s, #ff0000, #000000).animFill(0.2s, #000000).animFade(0.01s, #000000, #ff0000).animFill(2s, #ff0000).animFade(1s, #ff0000, #000000).animFill(1s, #000000));
-      });
-      siftSegments({ segment($front); }, {
-        addDrawing(0s, Infinity, animFade(0.05s, #000000, #ff0000).animFill(0.1s, #ff0000).animFade(0.05s, #ff0000, #000000).animFill(0.2s, #000000).animFade(0.01s, #000000, #ff0000).animFill(2s, #ff0000).animFade(1s, #ff0000, #000000).animFill(1s, #000000));
-      });
-    }).modifyBrightness(&value_error);
-  // Disconnected
-    siftCanvases({ canvas($ALL, $__STR, 1s); canvas($TOP, $__STR, 1s); }, {
-      subLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&value_disconnected);
+    siftSegments({ segment($por_T); }, {
+      addDrawing(10s, Infinity, animFade(1s, #000000, #ffffff).animFade(1s, #ffffff, #000000));
     });
     siftSegments({ segment($front); }, {
-      addLayer(0s, Infinity, {
-        interactive<0x01>(0s, Infinity, $disco, {
-          addDrawing(0s, 12s, animPlasmaShot(1s, #3b3b3b, 25%).animPlasmaShot(-1s, #3b3b3b, 25%).animNone(2s));
-        });
-      }).modifyBrightness(&value_disconnected);
+      addDrawing(10s, Infinity, animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(2s));
     });
-  // Lightning Button
-    siftSegments({ segment($por_L); segment($por_T); segment($por_R); }, {
-      const scale = mapValue(value_light, 0%, 20%, 100%, 0%);
-      const add = value_light;
-      scaLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&scale);
-      addLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyBrightness(&add);
+  }).modifyBrightness(&value_booting);
+// Print done
+  siftCanvases({ canvas($ALL, $__STR, 1s); }, {
+    subLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+    }).modifyBrightness(&value_done);
+  });
+  addLayer(0s, Infinity, {
+    siftSegments({ segment($por_T); segment($front); }, {
+      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     });
+  }).modifyBrightness(&value_done);
+// Connected animation
+  interactive<0x01>(0s, Infinity, $CONNE, {
+    siftSegments({ segment($porta); segment($front); }, {
+      addLayer(0.2s, 2s, {
+        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+      }).modifyFadeIn(0.2s).modifyFadeOut(1.5s);
+    });
+  });
+// Error
+  siftCanvases({ canvas($ALL, $__STR, 1s); canvas($TOP, $__STR, 1s); }, {
+    subLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+    }).modifyBrightness(&value_error);
+  });
+  addLayer(0s, Infinity, {
+    siftSegments({ segment($por_T); }, {
+      addDrawing(0s, Infinity, animFade(0.05s, #000000, #ff0000).animFill(0.1s, #ff0000).animFade(0.05s, #ff0000, #000000).animFill(0.2s, #000000).animFade(0.01s, #000000, #ff0000).animFill(2s, #ff0000).animFade(1s, #ff0000, #000000).animFill(1s, #000000));
+    });
+    siftSegments({ segment($front); }, {
+      addDrawing(0s, Infinity, animFade(0.05s, #000000, #ff0000).animFill(0.1s, #ff0000).animFade(0.05s, #ff0000, #000000).animFill(0.2s, #000000).animFade(0.01s, #000000, #ff0000).animFill(2s, #ff0000).animFade(1s, #ff0000, #000000).animFill(1s, #000000));
+    });
+  }).modifyBrightness(&value_error);
+// Disconnected
+  siftCanvases({ canvas($ALL, $__STR, 1s); canvas($TOP, $__STR, 1s); }, {
+    subLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+    }).modifyBrightness(&value_disconnected);
+  });
+  siftSegments({ segment($front); }, {
+    addLayer(0s, Infinity, {
+      interactive<0x01>(0s, Infinity, $disco, {
+        addDrawing(0s, 12s, animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(2s));
+      });
+    }).modifyBrightness(&value_disconnected);
+  });
+// Lightning Button
+  siftSegments({ segment($por_L); segment($por_T); segment($por_R); }, {
+    const scale = mapValue(value_light, 0%, 20%, 100%, 0%);
+    const add = value_light;
+    scaLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+    }).modifyBrightness(&scale);
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+    }).modifyBrightness(&add);
+  });
