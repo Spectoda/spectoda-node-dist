@@ -1,6 +1,3 @@
-// DEFINITIONS 
-
-// CORE 
 defDevice($BA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
   const button = ButtonProvider(0x12);
   const boolean = Boolean();
@@ -234,19 +231,17 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
       }).modifyBrightness(&value_booting);
     });
     addLayer(0s, Infinity, {
-      interactive<0x01>(0s, Infinity, $INJEC, {
-        siftSegments({ segment($porta); segment($front); }, {
-          addLayer(0s, Infinity, {
-            addDrawing(0s, 10s, animColorGradient5(6s, #000000, #0000ff, #0000ff, #0000ff, #0000ff, 100%, 100%).animFade(0.1s, #0000ff, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
-            scaDrawing(0s, 10s, animLoadingBar(6s, #ffffff, #000000).animNone(Infinity));
-          }).modifyFadeOut(1s);
-        });
-        siftSegments({ segment($por_T); }, {
-          addDrawing(10s, Infinity, animFade(1s, #000000, #ffffff).animFade(1s, #ffffff, #000000));
-        });
-        siftSegments({ segment($front); }, {
-          addDrawing(10s, Infinity, animPlasmaShot(0.5s, #ffffff, 25%).animPlasmaShot(-0.5s, #ffffff, 25%).animNone(1s));
-        });
+      siftSegments({ segment($porta); segment($front); }, {
+        addLayer(0s, 10s, {
+          addDrawing(0s, 10s, animColorGradient5(6s, #000000, #0000ff, #0000ff, #0000ff, #0000ff, 100%, 100%).animFade(0.1s, #0000ff, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
+          scaDrawing(0s, 10s, animLoadingBar(6s, #ffffff, #000000).animNone(Infinity));
+        }).modifyFadeOut(1s);
+      });
+      siftSegments({ segment($por_T); }, {
+        addDrawing(10s, Infinity, animFade(1s, #000000, #ffffff).animFade(1s, #ffffff, #000000));
+      });
+      siftSegments({ segment($front); }, {
+        addDrawing(10s, Infinity, animPlasmaShot(0.5s, #ffffff, 25%).animPlasmaShot(-0.5s, #ffffff, 25%).animNone(1s));
       });
     }).modifyBrightness(&value_booting);
   // Connected animation
