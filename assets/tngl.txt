@@ -1,3 +1,6 @@
+// DEFINITIONS 
+
+// CORE 
 defDevice($BA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
   const button = ButtonProvider(0x12);
   const boolean = Boolean();
@@ -224,12 +227,6 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&notification_state_done);
   });
-  // Disconnected
-    siftSegments({ segment($front); }, {
-      addLayer(0s, Infinity, {
-        addDrawing(10s, Infinity, animPlasmaShot(0.5s, #ffffff, 25%).animPlasmaShot(-0.5s, #ffffff, 25%).animNone(1s));
-      }).modifyBrightness(&value_disconnected);
-    });
   // Booting
     siftCanvases({ canvas($ALL, $__STR, 1s); }, {
       subLayer(0s, Infinity, {
@@ -274,6 +271,17 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
         addDrawing(0s, Infinity, animFade(0.05s, #000000, #ff0000).animFill(0.1s, #ff0000).animFade(0.05s, #ff0000, #000000).animFill(0.2s, #000000).animFade(0.01s, #000000, #ff0000).animFill(2s, #ff0000).animFade(1s, #ff0000, #000000).animFill(1s, #000000));
       });
     }).modifyBrightness(&value_error);
+  // Disconnected
+    siftCanvases({ canvas($ALL, $__STR, 1s); }, {
+      subLayer(0s, Infinity, {
+        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+      }).modifyBrightness(&value_disconnected);
+    });
+    siftSegments({ segment($front); }, {
+      addLayer(0s, Infinity, {
+        addDrawing(0s, Infinity, animPlasmaShot(1s, #3b3b3b, 25%).animPlasmaShot(-1s, #3b3b3b, 25%).animNone(2s));
+      }).modifyBrightness(&value_disconnected);
+    });
   // Lightning Button
     siftSegments({ segment($por_L); segment($por_T); segment($por_R); }, {
       const scale = mapValue(value_light, 0%, 20%, 100%, 0%);
