@@ -62,8 +62,6 @@ defSegment($por_T, 0x00, { slice($porta, 24px, 20px, 1px); });
 defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
 
 // This is a comment
-
-// This is a comment
   // Constants
   const SMOOTING_LIGHT = 1s;
   const SMOOTING_TRANSITION = 1s;
@@ -119,7 +117,7 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
 
   const value_booting = genSmoothOut(genLastEventParam($v_boo), &SMOOTING_TRANSITION);
   const value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
-  const value_progress = genSmoothOut(mapValue(genLastEventParam($v_pro), 5%, 100%, 0%, 95%), 0.001s);
+  const value_progress = genSmoothOut(mapValue(genLastEventParam($v_pro), 0%, 100%, 0%, 100%), 0.001s);
   const value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
   const value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 0%, 100%), &SMOOTING_TRANSITION);
   const value_busy = genSmoothOut(genLastEventParam($v_bus), &SMOOTING_TRANSITION);
