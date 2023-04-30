@@ -69,6 +69,12 @@ app.post("/connect", async (req, res) => {
         return res.json({ status: "success", result: result });
     }
     catch (error) {
+        if (error === "ScanFailed") {
+            // restart node in 10 ms
+            setTimeout(() => {
+                process.exit(1);
+            }, 10);
+        }
         res.statusCode = 405;
         return res.json({ status: "error", error: error });
     }

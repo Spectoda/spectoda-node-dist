@@ -13,8 +13,13 @@ async function main() {
     if (fs_1.default.existsSync("assets/mac.txt")) {
         const mac = fs_1.default.readFileSync("assets/mac.txt").toString();
         Logging_1.logging.info("Connecting to remembered device with MAC: " + mac);
-        // @ts-ignore
-        await communication_1.spectodaDevice.connect([{ mac: mac }], true, null, null, false, "", true);
+        try {
+            // @ts-ignore
+            await communication_1.spectodaDevice.connect([{ mac: mac }], true, null, null, false, "", true);
+        }
+        catch {
+            Logging_1.logging.error("Failed to connect to remembered device with MAC: " + mac);
+        }
     }
 }
 main();
