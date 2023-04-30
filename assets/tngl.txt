@@ -88,22 +88,23 @@ defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
   catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off).emitAs($_DONE);
   catchEvent($stdby).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($_DONE).emitAs($_BUSY);
   catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau);
-  // clear done or busy
-  catchEvent($_DONE).setValue(0%).emitAs($v_don);
-  catchEvent($_BUSY).setValue(0%).emitAs($v_bus);
-  catchEvent($BUSY).setValue(100%).emitAs($v_bus);
   // Animation Value State
   catchEvent($booti).emitAs($v_boo);
   catchEvent($disco).emitAs($v_dis);
-  catchEvent($toggl).emitAs($v_tog).emitAs($v_lig);
-  catchEvent($light).emitAs($v_lig);
+  catchEvent($toggl).emitAs($v_tog).emitAs($v_lig).emitAs($_DONE);
+  catchEvent($light).emitAs($v_lig).emitAs($_DONE);
   catchEvent($progr).emitAs($v_pro).emitAs($reset).setValue(100%).emitAs($s_bus);
   catchEvent($color).emitAs($v_col);
   catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog);
-  catchEvent($busy).setValue(100%).emitAs($v_bus);
-  catchEvent($print).setValue(100%).emitAs($v_bus);
-  catchEvent($done).setValue(100%).emitAs($v_don);
+  catchEvent($busy).emitAs($BUSY);
+  catchEvent($print).emitAs($BUSY);
+  catchEvent($done).emitAs($DONE);
   catchEvent($error).setValue(100%).emitAs($v_err);
+  // clear done or busy
+  catchEvent($_DONE).setValue(0%).emitAs($v_don);
+  catchEvent($DONE).setValue(100%).emitAs($v_don);
+  catchEvent($_BUSY).setValue(0%).emitAs($v_bus);
+  catchEvent($BUSY).setValue(100%).emitAs($v_bus);
 
   catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_cle).emitAs($s_cal).emitAs($s_hea).emitAs($s_hom).emitAs($s_lev).emitAs($s_mes).emitAs($s_off).emitAs($s_pri).emitAs($s_std).emitAs($s_pau);
 
