@@ -1,3 +1,69 @@
+defDevice($AB000, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
+defDevice($AB230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
+defDevice($AB231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
+defDevice($AB232, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
+defDevice($BA000, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
+defDevice($BA230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
 defDevice($BA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
   const button = ButtonProvider(0x12);
   const boolean = Boolean();
@@ -9,8 +75,8 @@ defDevice($BA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $POR
   negate->[0x00]event;
 });
 
-defDevice($AA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x0e);
+defDevice($BA232, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x12);
   const boolean = Boolean();
   const negate = Negate();
   const event = EventRelay($light, 0xff);
@@ -20,16 +86,7 @@ defDevice($AA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $POR
   negate->[0x00]event;
 });
 
-defCanvas($TOP, {
-  segment($por_T);
-});
-
-defCanvas($ALL, {
-  segment($front);
-  segment($porta);
-});
-
-defDevice($BA230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+defDevice($AA000, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
   const button = ButtonProvider(0x12);
   const boolean = Boolean();
   const negate = Negate();
@@ -51,6 +108,28 @@ defDevice($AA230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $POR
   negate->[0x00]event;
 });
 
+defDevice($AA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x0e);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
+defDevice($AA232, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+  const button = ButtonProvider(0x0e);
+  const boolean = Boolean();
+  const negate = Negate();
+  const event = EventRelay($light, 0xff);
+
+  button->[0x00]boolean;
+  boolean->[0x00]negate;
+  negate->[0x00]event;
+});
+
 defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
 
 defSegment($front, 0x00, { segment($PORTB, true); });
@@ -60,6 +139,15 @@ defSegment($por_L, 0x00, { slice($porta, 0px, 24px, 1px); });
 defSegment($por_T, 0x00, { slice($porta, 24px, 20px, 1px); });
 
 defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
+
+defCanvas($ALL, {
+  segment($front);
+  segment($porta);
+});
+
+defCanvas($TOP, {
+  segment($por_T);
+});
 
 // This is a comment
   // Constants
