@@ -45,7 +45,7 @@ defCanvas($FRONT, {
   catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
   catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
   catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
-  catchEvent($DISCO).setValue(100%).emitAs($disco);
+  catchEvent($DISCO).setValue(100%).emitAs($disco).setValue(0%).emitAs($light);
   catchEvent($kread).emitAs($stand);
   catchEvent($kdisc).emitAs($off);
   catchEvent($kshut).emitAs($off);
@@ -57,7 +57,7 @@ defCanvas($FRONT, {
   catchEvent($meshi).emitAs($PROC).emitAs($_DONE);
   // Notification states
   catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes).emitAs($_DONE).emitAs($_BUSY);
-  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro).emitAs($_DONE);
+  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro).emitAs($_DONE).emitAs($_PROC);
   catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_bus);
   catchEvent($heati).emitAs($reset).setValue(100%).emitAs($s_hea);
   catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off).emitAs($_DONE);
@@ -160,13 +160,13 @@ siftSegments({ segment($front); }, {
     }).modifyBrightness(&show_heating);
     addLayer(0s, Infinity, {
       var progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
-      var backgroud = addValues(#0a0a0a, mulValues(value_color, #050505));
+      var backgroud = addValues(#060606, mulValues(value_color, #030303));
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, &backgroud).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
       scaLayer(0s, Infinity, {
-        addDrawing(0s, Infinity, animFill(Infinity, #6b6b6b));
-        addDrawing(0s, Infinity, animPlasmaShot(10s, #ffffff, 1%));
+        addDrawing(0s, Infinity, animFill(Infinity, #b8b8b8));
+        addDrawing(0s, Infinity, animPlasmaShot(10s, #ffffff, 5%));
       });
     }).modifyBrightness(&show_progress);
   }).modifyBrightness(&notification_state_busy);
@@ -246,17 +246,32 @@ siftSegments({ segment($front); }, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&value_done);
   });
-  addLayer(0s, Infinity, {
-    siftSegments({ segment($por_T); segment($front); }, {
-      addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-    });
-  }).modifyBrightness(&value_done);
+  interactive<0x01>(0s, Infinity, $done, {
+    addLayer(0s, 10s, {
+      siftSegments({ segment($porta); segment($front); }, {
+        addDrawing(0s, Infinity, animRainbow(5s, 60%));
+        addDrawing(1.1s, 1s, animPlasmaShot(1s, #ffffff, 10%));
+        addDrawing(1.4s, 1s, animPlasmaShot(-1s, #ffffff, 10%));
+        addDrawing(1.8s, 1s, animPlasmaShot(1s, #ffffff, 10%));
+      });
+    }).modifyFadeIn(1s).modifyFadeOut(1.5s);
+    addLayer(9.5s, Infinity, {
+      siftSegments({ segment($por_T); }, {
+        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+      });
+      siftSegments({ segment($front); }, {
+        addDrawing(0s, Infinity, animRainbow(5s, 60%));
+      });
+    }).modifyFadeIn(1.5s).modifyBrightness(&value_done);
+  });
 // Connected animation
   interactive<0x01>(0s, Infinity, $CONNE, {
-    siftSegments({ segment($porta); segment($front); }, {
-      addLayer(0.2s, 2s, {
-        addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-      }).modifyFadeIn(0.2s).modifyFadeOut(1.5s);
+    scope(0s, 10s, {
+      siftSegments({ segment($porta); segment($front); }, {
+        addLayer(0.2s, 2s, {
+          addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+        }).modifyFadeIn(0.2s).modifyFadeOut(1.5s);
+      });
     });
   });
 // Error
@@ -296,4 +311,13 @@ siftSegments({ segment($front); }, {
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&add);
+  });
+// Print done
+  interactive<0x01>(0s, Infinity, $blink, {
+    scope(0s, 10s, {
+      siftSegments({ segment($por_L); segment($por_T); segment($por_R); }, {
+        scaDrawing(0s, 4s, animFade(0.5s, #ffffff, #000000).animFill(3s, #000000).animFade(0.5s, #000000, #ffffff));
+        setDrawing(1s, 2s, animFill(Infinity, #ffffff));
+      });
+    });
   });
