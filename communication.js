@@ -9,7 +9,7 @@ const Spectoda_1 = require("./lib/spectoda-js/Spectoda");
 const Logging_1 = require("./lib/spectoda-js/Logging");
 const fs_1 = __importDefault(require("fs"));
 const functions_1 = require("./lib/spectoda-js/functions");
-const spectodaDevice = new Spectoda_1.Spectoda("nodebluetooth", 0, true);
+const spectodaDevice = new Spectoda_1.Spectoda("nodebluetooth", true, true);
 exports.spectodaDevice = spectodaDevice;
 spectodaDevice.setDebugLevel(3);
 spectodaDevice.assignOwnerSignature("a06cd5c4d5741b61fee69422f2590926");
