@@ -48,7 +48,7 @@ defCanvas($FRONT, {
   catchEvent($DISCO).setValue(100%).emitAs($disco).setValue(0%).emitAs($light);
   catchEvent($kread).emitAs($stand);
   catchEvent($kdisc).emitAs($off);
-  catchEvent($kshut).emitAs($off);
+  catchEvent($kshut).emitAs($off).setValue(0%).emitAs($light);
   // Homing
   catchEvent($clean).emitAs($PROC).emitAs($_DONE);
   catchEvent($calib).emitAs($PROC).emitAs($_DONE);
