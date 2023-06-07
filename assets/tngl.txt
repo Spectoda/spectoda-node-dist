@@ -1,125 +1,4 @@
-defDevice($AB000, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AB230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AB231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AB232, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($BA000, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($BA230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($BA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($BA232, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AA000, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x12);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AA230, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x0e);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AA231, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
-  const button = ButtonProvider(0x0e);
-  const boolean = Boolean();
-  const negate = Negate();
-  const event = EventRelay($light, 0xff);
-
-  button->[0x00]boolean;
-  boolean->[0x00]negate;
-  negate->[0x00]event;
-});
-
-defDevice($AA232, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
+defDevice($p400k, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $PORTC, 0x00, {
   const button = ButtonProvider(0x0e);
   const boolean = Boolean();
   const negate = Negate();
@@ -159,8 +38,8 @@ defCanvas($FRONT, {
 
 // This is a comment
   // Constants
-  const SMOOTING_LIGHT = 1s;
-  const SMOOTING_TRANSITION = 1s;
+  var SMOOTING_LIGHT = 1s;
+  var SMOOTING_TRANSITION = 1s;
   // Temporary stuff
   // Booting conditions
   catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
@@ -207,29 +86,29 @@ defCanvas($FRONT, {
 
   catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_hea).emitAs($s_off).emitAs($s_std).emitAs($s_pau);
 
-  const notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
-  const notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
-  const notification_state_heating = genSmoothOut(genLastEventParam($s_hea), &SMOOTING_TRANSITION);
-  const notification_state_off = genSmoothOut(genLastEventParam($s_off), &SMOOTING_TRANSITION);
-  const notification_state_standby = genSmoothOut(genLastEventParam($s_std), &SMOOTING_TRANSITION);
-  const notification_state_pause = genSmoothOut(genLastEventParam($s_pau), &SMOOTING_TRANSITION);
+  var notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
+  var notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
+  var notification_state_heating = genSmoothOut(genLastEventParam($s_hea), &SMOOTING_TRANSITION);
+  var notification_state_off = genSmoothOut(genLastEventParam($s_off), &SMOOTING_TRANSITION);
+  var notification_state_standby = genSmoothOut(genLastEventParam($s_std), &SMOOTING_TRANSITION);
+  var notification_state_pause = genSmoothOut(genLastEventParam($s_pau), &SMOOTING_TRANSITION);
 
-  const value_booting = genSmoothOut(genLastEventParam($v_boo), &SMOOTING_TRANSITION);
-  const value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
-  const value_progress = genLastEventParam($v_pro);
-  const value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
-  const value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 0%, 100%), &SMOOTING_TRANSITION);
-  const value_busy = genSmoothOut(genLastEventParam($v_bus), &SMOOTING_TRANSITION);
-  const value_light = genSmoothOut(genLastEventParam($v_lig), &SMOOTING_TRANSITION);
-  const value_done = genSmoothOut(genLastEventParam($v_don), &SMOOTING_TRANSITION);
-  const value_error = genSmoothOut(genLastEventParam($v_err), &SMOOTING_TRANSITION);
-  const value_processing = genSmoothOut(genLastEventParam($v_prc), &SMOOTING_TRANSITION);
+  var value_booting = genSmoothOut(genLastEventParam($v_boo), &SMOOTING_TRANSITION);
+  var value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
+  var value_progress = genLastEventParam($v_pro);
+  var value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
+  var value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 0%, 100%), &SMOOTING_TRANSITION);
+  var value_busy = genSmoothOut(genLastEventParam($v_bus), &SMOOTING_TRANSITION);
+  var value_light = genSmoothOut(genLastEventParam($v_lig), &SMOOTING_TRANSITION);
+  var value_done = genSmoothOut(genLastEventParam($v_don), &SMOOTING_TRANSITION);
+  var value_error = genSmoothOut(genLastEventParam($v_err), &SMOOTING_TRANSITION);
+  var value_processing = genSmoothOut(genLastEventParam($v_prc), &SMOOTING_TRANSITION);
   // State machine
 // User Animations on portal
 siftSegments({ segment($porta); }, {
   addLayer(0s, Infinity, {
-    const show_standby = mapValue(value_busy, 0%, 80%, 100%, 0%);
-    const show_busy = mapValue(value_busy, 20%, 100%, 0%, 100%);
+    var show_standby = mapValue(value_busy, 0%, 80%, 100%, 0%);
+    var show_busy = mapValue(value_busy, 20%, 100%, 0%, 100%);
     // Printer test animation
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(1s, #ff0000).animFill(1s, #00ff00).animFill(1s, #0000ff).animFill(1s, #ff00ff).animFill(1s, #ffff00).animFill(1s, #00ffff).animFill(1s, #ffffff).animFill(1s, #000000));
@@ -272,16 +151,16 @@ siftSegments({ segment($front); }, {
   }).modifyBrightness(&notification_state_testing);
   // Printer busy notification
   addLayer(0s, Infinity, {
-    const show_heating = mapValue(value_progress, 0%, 0.01%, 100%, 0%);
-    const show_progress = mapValue(value_progress, 0.01%, 0.02%, 0%, 100%);
+    var show_heating = mapValue(value_progress, 0%, 0.01%, 100%, 0%);
+    var show_progress = mapValue(value_progress, 0.01%, 0.02%, 0%, 100%);
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animColorRoll(5s, #ff2200, #ff2200));
       scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
       scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
     }).modifyBrightness(&show_heating);
     addLayer(0s, Infinity, {
-      const progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
-      const backgroud = addValues(#0a0a0a, mulValues(value_color, #050505));
+      var progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
+      var backgroud = addValues(#0a0a0a, mulValues(value_color, #050505));
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, &backgroud).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
@@ -308,7 +187,7 @@ siftSegments({ segment($front); }, {
   }).modifyBrightness(&notification_state_standby);
   // Printer paused notification
   addLayer(0s, Infinity, {
-    const progress_time = mapValue(value_progress, 0%, 100%, 0s, 95s);
+    var progress_time = mapValue(value_progress, 0%, 100%, 0s, 95s);
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
     }).modifyTimeSet(&progress_time);
@@ -334,7 +213,7 @@ siftSegments({ segment($front); }, {
   });
   siftSegments({ segment($porta); }, {
     addLayer(0s, Infinity, {
-      const progress_time = mapValue(value_progress, 0%, 100%, 0s, 95s);
+      var progress_time = mapValue(value_progress, 0%, 100%, 0s, 95s);
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
@@ -409,8 +288,8 @@ siftSegments({ segment($front); }, {
   });
 // Lightning Button
   siftSegments({ segment($por_L); segment($por_T); segment($por_R); }, {
-    const scale = mapValue(value_light, 0%, 20%, 100%, 0%);
-    const add = value_light;
+    var scale = mapValue(value_light, 0%, 20%, 100%, 0%);
+    var add = value_light;
     scaLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&scale);
