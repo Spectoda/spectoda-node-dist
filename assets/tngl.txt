@@ -42,13 +42,13 @@ defCanvas($FRONT, {
   var SMOOTING_TRANSITION = 1s;
   // Temporary stuff
   // Booting conditions
-  catchEvent($INIT).emitAs($stdby).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
-  catchEvent($INJEC).emitAs($stdby).setValue(100%).emitAs($booti);
+  catchEvent($INIT).emitAs($stand).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
+  catchEvent($INJEC).emitAs($stand).setValue(100%).emitAs($booti);
   catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
   catchEvent($DISCO).setValue(100%).emitAs($disco).setValue(0%).emitAs($light);
   catchEvent($kread).emitAs($stand);
   catchEvent($kdisc).emitAs($off);
-  catchEvent($kshut).emitAs($off);
+  catchEvent($kshut).emitAs($off).setValue(0%).emitAs($light);
   // Homing
   catchEvent($clean).emitAs($PROC).emitAs($_DONE);
   catchEvent($calib).emitAs($PROC).emitAs($_DONE);

@@ -39,7 +39,7 @@ spectodaDevice.on("connected", async () => {
         try {
             do {
                 const fwFilePath = fs_1.default.readFileSync("assets/fw.txt", "utf8");
-                const controllerFwInfo = await spectodaDevice.getFwVersion();
+                const controllerFwInfo = await spectodaDevice.getFwVersion().catch(() => { return "UNKNOWN_0.0.0_00000000"; });
                 const fwFileMatch = fwFilePath.match(/(\d+\.\d+\.\d+)_(\d+)/);
                 if (!fwFileMatch) {
                     Logging_1.logging.error("Invalid firmware file format in fw.txt.");
