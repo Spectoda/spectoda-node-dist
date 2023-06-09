@@ -57,7 +57,7 @@ defCanvas($FRONT, {
   catchEvent($meshi).emitAs($PROC).emitAs($_DONE);
   // Notification states
   catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes).emitAs($_DONE).emitAs($_BUSY);
-  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro).emitAs($_DONE).emitAs($_PROC);
+  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro).emitAs($_DONE);
   catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_bus);
   catchEvent($heati).emitAs($reset).setValue(100%).emitAs($s_hea);
   catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off).emitAs($_DONE);
@@ -84,7 +84,7 @@ defCanvas($FRONT, {
   catchEvent($_PROC).setValue(0%).emitAs($v_prc);
   catchEvent($PROC).setValue(100%).emitAs($v_prc);
 
-  catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($s_tes).emitAs($s_bus).emitAs($s_hea).emitAs($s_off).emitAs($s_std).emitAs($s_pau);
+  catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($v_prc).emitAs($s_tes).emitAs($s_bus).emitAs($s_hea).emitAs($s_off).emitAs($s_std).emitAs($s_pau);
 
   var notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
   var notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
