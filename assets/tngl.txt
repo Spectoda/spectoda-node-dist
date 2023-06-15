@@ -9,15 +9,17 @@ defDevice($p400k, 0x00, 0xff, 25px, $PORTA, 0x00, 22px, $PORTB, 0x00, 43px, $POR
   negate->[0x00]event;
 });
 
-defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
+defSegment($_port, 0x00, { segment($PORTC, false); segment($PORTA, true); });
 
 defSegment($front, 0x00, { segment($PORTB, true); });
 
-defSegment($por_L, 0x00, { slice($porta, 0px, 24px, 1px); });
+defSegment($por_L, 0x00, { slice($_port, 0px, 24px, 1px); });
 
-defSegment($por_T, 0x00, { slice($porta, 24px, 20px, 1px); });
+defSegment($por_T, 0x00, { slice($_port, 24px, 20px, 1px); });
 
-defSegment($por_R, 0x00, { slice($porta, 44px, 24px, 1px); });
+defSegment($por_R, 0x00, { slice($_port, 44px, 24px, 1px); });
+
+defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
 
 defCanvas($ALL, {
   segment($front);
@@ -47,8 +49,8 @@ defCanvas($FRONT, {
   catchEvent($CONNE).setValue(0%).emitAs($disco).setValue(0%).emitAs($booti);
   catchEvent($DISCO).setValue(100%).emitAs($disco).setValue(0%).emitAs($light);
   catchEvent($kread).emitAs($stand);
-  catchEvent($kdisc).emitAs($off);
-  catchEvent($kshut).emitAs($off).setValue(0%).emitAs($light);
+  catchEvent($kdisc).emitAs($SHUT);
+  catchEvent($kshut).emitAs($SHUT).setValue(0%).emitAs($light);
   // Homing
   catchEvent($clean).emitAs($PROC).emitAs($_DONE);
   catchEvent($calib).emitAs($PROC).emitAs($_DONE);
@@ -60,36 +62,39 @@ defCanvas($FRONT, {
   catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).setValue(0%).emitAs($v_pro).emitAs($_DONE);
   catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_bus);
   catchEvent($heati).emitAs($reset).setValue(100%).emitAs($s_hea);
-  catchEvent($off).emitAs($reset).setValue(100%).emitAs($s_off).emitAs($_DONE);
+  catchEvent($off).emitAs($SHUT).emitAs($_DONE);
   catchEvent($stand).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($_DONE).emitAs($_BUSY);
   catchEvent($stdby).emitAs($_PROC);
   catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau);
   // Animation Value State
-  catchEvent($booti).emitAs($v_boo);
+  catchEvent($booti).emitAs($v_boo).emitAs($_SHUT).emitAs($_DONE);
   catchEvent($disco).emitAs($v_dis);
   catchEvent($toggl).emitAs($v_tog).emitAs($v_lig).emitAs($_DONE);
   catchEvent($light).emitAs($v_lig).emitAs($_DONE);
   catchEvent($progr).emitAs($v_pro);
-  catchEvent($color).emitAs($v_col);
-  catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog);
+  catchEvent($color).emitAs($v_col).emitAs($_SHUT).emitAs($_DONE);
+  catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog).emitAs($_SHUT).emitAs($_DONE);
   catchEvent($busy).emitAs($BUSY);
   catchEvent($print).emitAs($BUSY);
   catchEvent($done).emitAs($DONE).emitAs($_BUSY);
   catchEvent($error).setValue(100%).emitAs($v_err);
   // clear done or busy
+  catchEvent($_BOOT).setValue(0%).emitAs($v_boo);
+  catchEvent($BOOT).setValue(100%).emitAs($v_boo);
   catchEvent($_DONE).setValue(0%).emitAs($v_don);
   catchEvent($DONE).setValue(100%).emitAs($v_don);
   catchEvent($_BUSY).setValue(0%).emitAs($v_bus);
   catchEvent($BUSY).setValue(100%).emitAs($v_bus);
   catchEvent($_PROC).setValue(0%).emitAs($v_prc);
   catchEvent($PROC).setValue(100%).emitAs($v_prc);
+  catchEvent($_SHUT).setValue(0%).emitAs($v_shu);
+  catchEvent($SHUT).setValue(100%).emitAs($v_shu);
 
-  catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($v_prc).emitAs($s_tes).emitAs($s_bus).emitAs($s_hea).emitAs($s_off).emitAs($s_std).emitAs($s_pau);
+  catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($v_prc).emitAs($v_shu).emitAs($s_tes).emitAs($s_bus).emitAs($s_hea).emitAs($s_std).emitAs($s_pau);
 
   var notification_state_testing = genSmoothOut(genLastEventParam($s_tes), &SMOOTING_TRANSITION);
   var notification_state_busy = genSmoothOut(genLastEventParam($s_bus), &SMOOTING_TRANSITION);
   var notification_state_heating = genSmoothOut(genLastEventParam($s_hea), &SMOOTING_TRANSITION);
-  var notification_state_off = genSmoothOut(genLastEventParam($s_off), &SMOOTING_TRANSITION);
   var notification_state_standby = genSmoothOut(genLastEventParam($s_std), &SMOOTING_TRANSITION);
   var notification_state_pause = genSmoothOut(genLastEventParam($s_pau), &SMOOTING_TRANSITION);
 
@@ -103,6 +108,7 @@ defCanvas($FRONT, {
   var value_done = genSmoothOut(genLastEventParam($v_don), &SMOOTING_TRANSITION);
   var value_error = genSmoothOut(genLastEventParam($v_err), &SMOOTING_TRANSITION);
   var value_processing = genSmoothOut(genLastEventParam($v_prc), &SMOOTING_TRANSITION);
+  var value_shutdown = genSmoothOut(genLastEventParam($v_shu), &SMOOTING_TRANSITION);
   // State machine
 // User Animations on portal
 siftSegments({ segment($porta); }, {
@@ -176,9 +182,6 @@ siftSegments({ segment($front); }, {
     scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
     scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
   }).modifyBrightness(&notification_state_heating);
-  // Printer off notification
-  addLayer(0s, Infinity, {
-  }).modifyBrightness(&notification_state_off);
   // Printer standby notification
   addLayer(0s, Infinity, {
     addLayer(0s, Infinity, {
@@ -221,7 +224,7 @@ siftSegments({ segment($front); }, {
     }).modifyBrightness(&notification_state_pause);
   });
 // Booting
-  siftCanvases({ canvas($ALL, $__STR, 1s); }, {
+  siftSegments({ segment($front); segment($por_L); segment($por_T); segment($por_R); }, {
     subLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&value_booting);
@@ -241,7 +244,7 @@ siftSegments({ segment($front); }, {
     });
   }).modifyBrightness(&value_booting);
 // Print done
-  siftCanvases({ canvas($ALL, $__STR, 1s); }, {
+  siftSegments({ segment($front); segment($por_L); segment($por_T); segment($por_R); }, {
     subLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&value_done);
@@ -275,7 +278,7 @@ siftSegments({ segment($front); }, {
     });
   });
 // Error
-  siftCanvases({ canvas($ALL, $__STR, 1s); canvas($TOP, $__STR, 1s); }, {
+  siftSegments({ segment($front); segment($por_L); segment($por_T); segment($por_R); }, {
     subLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
     }).modifyBrightness(&value_error);
@@ -288,12 +291,13 @@ siftSegments({ segment($front); }, {
       addDrawing(0s, Infinity, animFade(0.05s, #000000, #ff0000).animFill(0.1s, #ff0000).animFade(0.05s, #ff0000, #000000).animFill(0.2s, #000000).animFade(0.01s, #000000, #ff0000).animFill(2s, #ff0000).animFade(1s, #ff0000, #000000).animFill(1s, #000000));
     });
   }).modifyBrightness(&value_error);
-// Disconnected
-  siftCanvases({ canvas($ALL, $__STR, 1s); canvas($TOP, $__STR, 1s); }, {
+// Shutdown
+  siftSegments({ segment($front); segment($por_L); segment($por_T); segment($por_R); }, {
     subLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
-    }).modifyBrightness(&value_disconnected);
+    }).modifyBrightness(&value_shutdown);
   });
+// Disconnected
   siftSegments({ segment($front); }, {
     addLayer(0s, Infinity, {
       interactive<0x01>(0s, Infinity, $disco, {
