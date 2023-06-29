@@ -150,6 +150,8 @@ defCanvas($FRONT, {
   var value_heating = genSmoothOut(genLastEventParam($v_hea), &SMOOTING_TRANSITION);
   var value_done = genSmoothOut(genLastEventParam($v_don), &SMOOTING_TRANSITION);
   var value_not_done = mapValue(value_done, 0%, 100%, 100%, 0%);
+
+  var progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
   // State machine
 // User Animations on portal
 siftSegments({ segment($porta); }, {
@@ -224,14 +226,12 @@ siftSegments({ segment($porta); }, {
       addDrawing(0s, Infinity, animPlasmaShot(-9.6s, &value_color, 9%));
     }).modifyBrightness(&busy_animation_2).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
-      var progress_time = mapValue(value_progress, 0%, 100%, 0s, 95s);
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #000000).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
     }).modifyBrightness(&busy_animation_3).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
   // Printer paused
     addLayer(0s, Infinity, {
-      var progress_time = mapValue(value_progress, 0%, 100%, 5s, 95s);
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #000000).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
@@ -309,7 +309,6 @@ siftSegments({ segment($front); }, {
         scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
       }).modifyBrightness(&show_heating);
       addLayer(0s, Infinity, {
-        var progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
         var backgroud = addValues(#060606, mulValues(value_color, #030303));
         addLayer(0s, Infinity, {
           addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, &backgroud).animFill(Infinity, &value_color));
@@ -322,7 +321,6 @@ siftSegments({ segment($front); }, {
     }).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done);
   // Printer paused notification
     addLayer(0s, Infinity, {
-      var progress_time = mapValue(value_progress, 0%, 100%, 0s, 95s);
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
@@ -432,9 +430,3 @@ siftSegments({ segment($front); }, {
       });
     });
   });
-
-defSegment($a, 0x00, { slice($porta, 0px, 20px, 1px); });
-
-defSegment($b, 0x00, { slice($porta, 20px, 10px, 1px); });
-
-defSegment($b, 0x00, { slice($porta, 20px, 10px, -1px); });
