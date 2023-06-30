@@ -24,21 +24,8 @@ defSegment($front, 0x00, { segment($PORTB, true); });
 
 defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
 
-defCanvas($ALL, {
-  segment($front);
-  segment($porta);
-});
-
-defCanvas($PORTA, {
-  segment($porta);
-});
-
-defCanvas($FRONT, {
-  segment($front);
-});
-
 // This is a comment
-  catchEvent($INIT).emitAs($s_an1).emitAs($b_an1).emitAs($p_an1).emitAs($d_an1);
+  catchEvent($INIT).emitAs($s_an2).emitAs($b_an3).emitAs($p_an1).emitAs($d_an3);
   var TRANSITION_TIME = 0.5s;
   // Printer standby
   catchEvent($s_an1).emitAs($s_rst).setValue(100%).emitAs($_san1);
@@ -82,7 +69,8 @@ defCanvas($FRONT, {
   var SMOOTING_TRANSITION = 1s;
   // Temporary stuff
   // Booting conditions
-  catchEvent($INIT).emitAs($stand).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color).setValue(0%).emitAs($booti);
+  catchEvent($INIT).emitAs($stand).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color);
+  catchEvent($INIT).setValue($_BOOT).emitAs($_DONE).emitAs($_PROC).emitAs($_BUSY).setValue($_BOOT);
   catchEvent($INJEC).emitAs($stand).setValue($_BOOT);
   catchEvent($CONNE).setValue(0%).emitAs($disco).setValue($_BOOT);
   catchEvent($DISCO).setValue(100%).emitAs($disco).setValue(0%).emitAs($light);
@@ -90,11 +78,11 @@ defCanvas($FRONT, {
   catchEvent($kdisc).emitAs($SHUT).emitAs($_DONE);
   catchEvent($kshut).emitAs($SHUT).emitAs($_DONE).setValue(0%).emitAs($light);
   // Homing
-  catchEvent($clean).emitAs($PROC).emitAs($_DONE);
-  catchEvent($calib).emitAs($PROC).emitAs($_DONE);
-  catchEvent($homin).emitAs($PROC).emitAs($_DONE);
-  catchEvent($level).emitAs($PROC).emitAs($_DONE);
-  catchEvent($meshi).emitAs($PROC).emitAs($_DONE);
+  catchEvent($clean).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
+  catchEvent($calib).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
+  catchEvent($homin).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
+  catchEvent($level).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
+  catchEvent($meshi).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
   // Notification states
   catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes).emitAs($_DONE).emitAs($_BUSY);
   catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).emitAs($_PROC).emitAs($_DONE).emitAs($_HEAT);
@@ -104,7 +92,7 @@ defCanvas($FRONT, {
   catchEvent($stand).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($_DONE).emitAs($_BUSY);
   catchEvent($stdby).emitAs($_PROC).emitAs($_HEAT);
   catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau).emitAs($_HEAT);
-  catchEvent($done).emitAs($DONE).emitAs($_BUSY);
+  catchEvent($done).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($DONE).emitAs($_BUSY);
   // Animation Value State
   catchEvent($booti).emitAs($BOOT).emitAs($_SHUT).emitAs($_DONE);
   catchEvent($disco).emitAs($v_dis);
@@ -224,7 +212,7 @@ siftSegments({ segment($porta); }, {
     }).modifyBrightness(&busy_animation_2).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, &value_color));
-      filLayer(0s, Infinity, {
+      scaLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
         scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
         scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
