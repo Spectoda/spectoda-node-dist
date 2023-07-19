@@ -25,7 +25,7 @@ defSegment($front, 0x00, { segment($PORTB, true); });
 defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
 
 // This is a comment
-  catchEvent($INIT).emitAs($s_an2).emitAs($b_an3).emitAs($p_an1).emitAs($d_an3);
+  catchEvent($INIT).emitAs($s_an2).emitAs($b_an3).emitAs($p_an1).emitAs($f_an1).emitAs($d_an3);
   var TRANSITION_TIME = 0.5s;
   // Printer standby
   catchEvent($s_an1).emitAs($s_rst).setValue(100%).emitAs($_san1);
@@ -42,6 +42,11 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   catchEvent($p_an2).emitAs($p_rst).setValue(100%).emitAs($_pan2);
   catchEvent($p_an3).emitAs($p_rst).setValue(100%).emitAs($_pan3);
   catchEvent($p_rst).setValue(0%).emitAs($_pan1).emitAs($_pan2).emitAs($_pan3);
+  // Printer fillament change
+  catchEvent($f_an1).emitAs($f_rst).setValue(100%).emitAs($_fan1);
+  catchEvent($f_an2).emitAs($f_rst).setValue(100%).emitAs($_fan2);
+  catchEvent($f_an3).emitAs($f_rst).setValue(100%).emitAs($_fan3);
+  catchEvent($f_rst).setValue(0%).emitAs($_fan1).emitAs($_fan2).emitAs($_fan3);
   // Printer done
   catchEvent($d_an1).emitAs($d_rst).setValue(100%).emitAs($_dan1);
   catchEvent($d_an2).emitAs($d_rst).setValue(100%).emitAs($_dan2);
@@ -59,6 +64,10 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   var paused_animation_1 = genSmoothOut(genLastEventParam($_pan1), &TRANSITION_TIME);
   var paused_animation_2 = genSmoothOut(genLastEventParam($_pan2), &TRANSITION_TIME);
   var paused_animation_3 = genSmoothOut(genLastEventParam($_pan3), &TRANSITION_TIME);
+  // Fillament Change
+  var filchange_animation_1 = genSmoothOut(genLastEventParam($_fan1), &TRANSITION_TIME);
+  var filchange_animation_2 = genSmoothOut(genLastEventParam($_fan2), &TRANSITION_TIME);
+  var filchange_animation_3 = genSmoothOut(genLastEventParam($_fan3), &TRANSITION_TIME);
   // Done
   var done_animation_1 = genSmoothOut(genLastEventParam($_dan1), &TRANSITION_TIME);
   var done_animation_2 = genSmoothOut(genLastEventParam($_dan2), &TRANSITION_TIME);
@@ -84,12 +93,12 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   catchEvent($level).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
   catchEvent($meshi).emitAs($PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_SHUT);
   // Notification states
-  catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes).emitAs($_DONE).emitAs($_BUSY);
-  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).emitAs($_PROC).emitAs($_DONE).emitAs($_HEAT);
+  catchEvent($test).emitAs($reset).setValue(100%).emitAs($s_tes).emitAs($_DONE).emitAs($_BUSY).emitAs($_FILC);
+  catchEvent($busy).emitAs($reset).setValue(100%).emitAs($s_bus).emitAs($_PROC).emitAs($_DONE).emitAs($_HEAT).emitAs($_FILC);
   catchEvent($print).emitAs($reset).setValue(100%).emitAs($s_bus).emitAs($_HEAT);
   catchEvent($heati).emitAs($HEAT).emitAs($_DONE);
-  catchEvent($off).emitAs($SHUT).emitAs($_DONE);
-  catchEvent($stand).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($_DONE).emitAs($_BUSY);
+  catchEvent($off).emitAs($SHUT).emitAs($_DONE).emitAs($_FILC);
+  catchEvent($stand).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($_DONE).emitAs($_BUSY).emitAs($_FILC);
   catchEvent($stdby).emitAs($_PROC).emitAs($_HEAT);
   catchEvent($pause).emitAs($reset).setValue(100%).emitAs($s_pau).emitAs($_HEAT);
   catchEvent($done).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($DONE).emitAs($_BUSY);
@@ -102,8 +111,9 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   catchEvent($color).emitAs($v_col).emitAs($_SHUT).emitAs($_DONE);
   catchEvent($brigh).emitAs($v_bri).setValue(100%).emitAs($v_tog).emitAs($_SHUT).emitAs($_DONE);
   catchEvent($busy).emitAs($BUSY);
-  catchEvent($print).emitAs($BUSY);
+  catchEvent($print).emitAs($BUSY).emitAs($_FILC);
   catchEvent($error).setValue(100%).emitAs($v_err);
+  catchEvent($filch).emitAs($FILC);
   // clear done or busy
   catchEvent($_BOOT).setValue(0%).emitAs($v_boo);
   catchEvent($BOOT).setValue(100%).emitAs($v_boo);
@@ -117,6 +127,8 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   catchEvent($PROC).setValue(100%).emitAs($v_prc);
   catchEvent($_SHUT).setValue(0%).emitAs($v_shu);
   catchEvent($SHUT).setValue(100%).emitAs($v_shu);
+  catchEvent($_FILC).setValue(0%).emitAs($v_fch);
+  catchEvent($FILC).setValue(100%).emitAs($v_fch);
 
   catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($v_prc).emitAs($v_shu).emitAs($s_tes).emitAs($s_std).emitAs($s_bus).emitAs($s_pau);
 
@@ -138,8 +150,10 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   var value_heating = genSmoothOut(genLastEventParam($v_hea), &SMOOTING_TRANSITION);
   var value_done = genSmoothOut(genLastEventParam($v_don), &SMOOTING_TRANSITION);
   var value_not_done = mapValue(value_done, 0%, 100%, 100%, 0%);
+  var value_filchange = genSmoothOut(genLastEventParam($v_fch), &SMOOTING_TRANSITION);
+  var value_not_filchange = mapValue(value_filchange, 0%, 100%, 100%, 0%);
 
-  var progress_time = mapValue(value_progress, 0%, 100%, 0s, 100s);
+  var progress_time = mapValue(value_progress, 0%, 100%, 1s, 100s);
   // State machine
 // User Animations on portal
 siftSegments({ segment($porta); }, {
@@ -147,14 +161,14 @@ siftSegments({ segment($porta); }, {
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(1s, #ff0000).animFill(1s, #00ff00).animFill(1s, #0000ff).animFill(1s, #ff00ff).animFill(1s, #ffff00).animFill(1s, #00ffff).animFill(1s, #ffffff).animFill(1s, #000000));
       addDrawing(0s, Infinity, animPlasmaShot(8s, #ffffff, 1%));
-    }).modifyBrightness(&notification_state_testing).modifyBrightness(&value_not_done);
+    }).modifyBrightness(&notification_state_testing).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done);
   // Printer standby
     addLayer(0s, Infinity, {
       setDrawing(0s, Infinity, animFill(Infinity, &value_color));
       subDrawing(0s, Infinity, animColorGradient5(13s, #4f0000, #450000, #000000, #730000, #400000, 100%, 30%));
       subDrawing(0s, Infinity, animColorGradient5(19s, #002100, #002e00, #005700, #000000, #004500, 100%, 30%));
       subDrawing(0s, Infinity, animColorGradient5(23s, #000000, #000038, #00004d, #00001f, #000057, 100%, 30%));
-    }).modifyBrightness(&standby_animation_1).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&standby_animation_1).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       setDrawing(0s, Infinity, animFill(Infinity, &value_color));
       subDrawing(0s, Infinity, animColorGradient5(13s, #4f0000, #450000, #000000, #730000, #400000, 100%, 30%));
@@ -165,7 +179,7 @@ siftSegments({ segment($porta); }, {
         subDrawing(0s, Infinity, animPlasmaShot(60s, #ffffff, 3%));
         subDrawing(0s, Infinity, animPlasmaShot(-40s, #ffffff, 3%));
       });
-    }).modifyBrightness(&standby_animation_2).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&standby_animation_2).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animPlasmaShot(17.5s, &value_color, 40%));
@@ -189,13 +203,13 @@ siftSegments({ segment($porta); }, {
         addDrawing(0s, Infinity, animPlasmaShot(10s, #808080, 25%));
         addDrawing(0s, Infinity, animPlasmaShot(10s, #808080, 100%));
       }).modifyTimeSet(5s);
-    }).modifyBrightness(&standby_animation_3).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&standby_animation_3).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
   // Printer busy
     addLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #000000).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
-    }).modifyBrightness(&busy_animation_1).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&busy_animation_1).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animPlasmaShot(30s, &value_color, 100%));
@@ -209,7 +223,7 @@ siftSegments({ segment($porta); }, {
       addDrawing(0s, Infinity, animPlasmaShot(-9s, &value_color, 10%));
       addDrawing(0s, Infinity, animPlasmaShot(-10.4s, &value_color, 11%));
       addDrawing(0s, Infinity, animPlasmaShot(-9.6s, &value_color, 9%));
-    }).modifyBrightness(&busy_animation_2).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&busy_animation_2).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(Infinity, &value_color));
       scaLayer(0s, Infinity, {
@@ -217,14 +231,18 @@ siftSegments({ segment($porta); }, {
         scaDrawing(0s, Infinity, animColorRoll(7s, #ffffff, #000000));
         scaDrawing(0s, Infinity, animColorRoll(-9s, #ffffff, #000000));
       });
-    }).modifyBrightness(&busy_animation_3).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&busy_animation_3).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
   // Printer paused
     addLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #000000).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
       scaDrawing(0s, Infinity, animFade(2s, #141414, #ffffff).animFill(0.5s, #ffffff).animFade(2s, #ffffff, #141414));
-    }).modifyBrightness(&notification_state_pause).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&paused_animation_1).modifyBrightness(&notification_state_pause).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
+  // Printer fillament change
+    addLayer(0s, Infinity, {
+      addDrawing(0s, Infinity, animFill(1s, #ff4800).animFill(1s, #000000));
+    }).modifyBrightness(&filchange_animation_1).modifyBrightness(&value_filchange).modifyBrightness(&value_not_done).modifyBrightness(&value_brightness);
   // Printer done
     addLayer(0s, Infinity, {
       interactive<0x01>(0s, Infinity, $DONE, {
@@ -233,7 +251,7 @@ siftSegments({ segment($porta); }, {
           subDrawing(0s, Infinity, animLoadingBar(29s, #ffffff, #000000));
         }).modifyFadeIn(1.5s).modifyTimeSet(10s);
       });
-    }).modifyBrightness(&done_animation_1).modifyBrightness(&value_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&done_animation_1).modifyBrightness(&value_not_filchange).modifyBrightness(&value_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       interactive<0x01>(0s, Infinity, $DONE, {
         addLayer(0s, 10s, {
@@ -258,7 +276,7 @@ siftSegments({ segment($porta); }, {
           subDrawing(0s, Infinity, animLoadingBar(29s, #ffffff, #000000));
         }).modifyFadeIn(1.5s).modifyTimeSet(10s);
       });
-    }).modifyBrightness(&done_animation_2).modifyBrightness(&value_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&done_animation_2).modifyBrightness(&value_not_filchange).modifyBrightness(&value_done).modifyBrightness(&value_brightness);
     addLayer(0s, Infinity, {
       interactive<0x01>(0s, Infinity, $DONE, {
         addLayer(0s, 10s, {
@@ -272,7 +290,7 @@ siftSegments({ segment($porta); }, {
           subDrawing(0s, Infinity, animLoadingBar(29s, #ffffff, #000000));
         }).modifyFadeIn(1.5s).modifyTimeSet(10s);
       });
-    }).modifyBrightness(&done_animation_3).modifyBrightness(&value_done).modifyBrightness(&value_brightness);
+    }).modifyBrightness(&done_animation_3).modifyBrightness(&value_not_filchange).modifyBrightness(&value_done).modifyBrightness(&value_brightness);
 });
 // Notification States
 siftSegments({ segment($front); }, {
@@ -280,13 +298,13 @@ siftSegments({ segment($front); }, {
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animFill(1s, #ff0000).animFill(1s, #00ff00).animFill(1s, #0000ff).animFill(1s, #ff00ff).animFill(1s, #ffff00).animFill(1s, #00ffff).animFill(1s, #ffffff).animFill(1s, #000000));
       addDrawing(0s, Infinity, animPlasmaShot(8s, #ffffff, 1%));
-    }).modifyBrightness(&notification_state_testing).modifyBrightness(&value_not_done);
+    }).modifyBrightness(&notification_state_testing).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done);
   // Printer standby notification
     addLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animFill(Infinity, &value_color));
       }).modifyBrightness(3%);
-    }).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_done);
+    }).modifyBrightness(&notification_state_standby).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done);
   // Printer busy notification
     addLayer(0s, Infinity, {
       var show_heating = mapValue(value_progress, 0%, 0.01%, 100%, 0%);
@@ -306,18 +324,25 @@ siftSegments({ segment($front); }, {
           addDrawing(0s, Infinity, animPlasmaShot(10s, #ffffff, 5%));
         });
       }).modifyBrightness(&show_progress);
-    }).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_done);
+    }).modifyBrightness(&notification_state_printing).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done);
   // Printer paused notification
     addLayer(0s, Infinity, {
       addLayer(0s, Infinity, {
         addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
       }).modifyTimeSet(&progress_time);
       scaDrawing(0s, Infinity, animFade(2s, #000000, #ffffff).animFill(0.5s, #ffffff).animFade(2s, #ffffff, #000000));
-    }).modifyBrightness(&notification_state_pause).modifyBrightness(&value_not_done);
+    }).modifyBrightness(&notification_state_pause).modifyBrightness(&value_not_filchange).modifyBrightness(&value_not_done);
+  // Printer fillament change notification
+    addLayer(0s, Infinity, {
+      addLayer(0s, Infinity, {
+        addDrawing(0s, Infinity, animLoadingBar(100s, &value_color, #ffffff).animFill(Infinity, &value_color));
+      }).modifyTimeSet(&progress_time);
+      scaDrawing(0s, Infinity, animFade(2s, #000000, #ffffff).animFill(0.5s, #ffffff).animFade(2s, #ffffff, #000000));
+    }).modifyBrightness(&value_filchange).modifyBrightness(&value_not_done);
   // Printer done
     addLayer(0s, Infinity, {
       addDrawing(0s, Infinity, animRainbow(5s, 60%));
-    }).modifyBrightness(&value_done);
+    }).modifyBrightness(&value_done).modifyBrightness(&value_not_filchange);
 });
 // Printer is processing
   siftSegments({ segment($front); }, {
