@@ -141,7 +141,7 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   var value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
   var value_progress = genLastEventParam($v_pro);
   var value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
-  var value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 0%, 100%), &SMOOTING_TRANSITION);
+  var value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 1%, 100%), &SMOOTING_TRANSITION);
   var value_printing = genSmoothOut(genLastEventParam($v_bus), &SMOOTING_TRANSITION);
   var value_light = genSmoothOut(genLastEventParam($v_lig), &SMOOTING_TRANSITION);
   var value_error = genSmoothOut(genLastEventParam($v_err), &SMOOTING_TRANSITION);
