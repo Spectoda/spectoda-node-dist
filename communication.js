@@ -34,6 +34,21 @@ globalThis.spectodaDevice = spectodaDevice;
 spectodaDevice.on("connected", async () => {
     Logging_1.logging.info("> Checking for updates...");
     await (0, functions_1.sleep)(1000);
+    try {
+        const controllerName = await spectodaDevice.readControllerName();
+        if (fs_1.default.existsSync("assets/name.txt")) {
+            const name = fs_1.default.readFileSync("assets/name.txt").toString();
+            Logging_1.logging.info("Remembered device name: " + name);
+            if (controllerName != name) {
+                await spectodaDevice.writeControllerName(name);
+            }
+        } else {
+            fs_1.default.writeFileSync("assets/name.txt", controllerName);
+        }
+        await (0, functions_1.sleep)(1000);
+    } catch (e) {
+        Logging_1.logging.info("Naming error", e);
+    }
     // upload latest FW
     if (fs_1.default.existsSync("assets/fw.txt")) {
         try {
