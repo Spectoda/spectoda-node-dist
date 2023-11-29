@@ -1,4 +1,5 @@
 defDevice($p400k, 0x00, 0xff, 26px, $PORTA, 0xff, 22px, $PORTB, 0xff, 44px, $PORTC, 0xff, {
+
   const button = 0xA2($toggl);
   const boolean = Boolean();
   const negate = Negate();
@@ -7,6 +8,7 @@ defDevice($p400k, 0x00, 0xff, 26px, $PORTA, 0xff, 22px, $PORTB, 0xff, 44px, $POR
   button->[0x00]boolean;
   boolean->[0x00]negate;
   negate->[0x00]event;
+
 });
 
 defSegment($front, 0x00, { slice($PORTB, 19px, 20px, -1px); });
@@ -418,8 +420,8 @@ siftSegments({ segment($front); }, {
 
   siftSegments({ segment($front); }, {
     interactive<0x01>(0s, Infinity, $DISCO, {
-      scaDrawing(0s, 13s, animFade(1s, #ffffff, #171717).animFill(11s, #171717).animFade(1s, #171717, #ffffff));
-      addDrawing(0s, 13s, animNone(1s).animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(1s));
+      scaDrawing(0s, 17s, animFade(1s, #ffffff, #171717).animFill(15s, #171717).animFade(1s, #171717, #ffffff));
+      addDrawing(0s, 17s, animNone(1s).animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(1s));
     });
   });
 
