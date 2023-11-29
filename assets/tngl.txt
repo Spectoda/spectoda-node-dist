@@ -1,8 +1,5 @@
-
-
-
-defDevice($p400k, 0x00, 0xff, 25px, $PORTA, 0xff, 20px, $PORTB, 0xff, 43px, $PORTC, 0xff, {
-  const button = 0xA2($toggl); 
+defDevice($p400k, 0x00, 0xff, 26px, $PORTA, 0xff, 22px, $PORTB, 0xff, 44px, $PORTC, 0xff, {
+  const button = 0xA2($toggl);
   const boolean = Boolean();
   const negate = Negate();
   const event = EventRelay($light, 0xff);
@@ -12,9 +9,10 @@ defDevice($p400k, 0x00, 0xff, 25px, $PORTA, 0xff, 20px, $PORTB, 0xff, 43px, $POR
   negate->[0x00]event;
 });
 
-defSegment($front, 0x00, { segment($PORTB, true); });
+defSegment($front, 0x00, { slice($PORTB, 19px, 20px, -1px); });
 
-defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
+defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24px, -1px); });
+
 
 
   catchEvent($INIT).emitAs($s_an2).emitAs($b_an3).emitAs($p_an1).emitAs($f_an1).emitAs($d_an3);
@@ -73,8 +71,8 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   catchEvent($INIT).emitAs($stand).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color);
   catchEvent($INIT).emitAs($_STRT).emitAs($_DONE).emitAs($_PROC).emitAs($_BUSY);
   catchEvent($BOOT).emitAs($stand).emitAs($_SHUT).emitAs($STRT);
-  catchEvent($CONNE).setValue(0%).emitAs($disco).emitAs($_STRT);
-  catchEvent($DISCO).setValue(100%).emitAs($disco).setValue(0%).emitAs($light);
+  catchEvent($CONNE).emitAs($_STRT).emitAs($_SHUT);
+  catchEvent($DISCO).emitAs($SHUT).emitAs($_DONE).setValue(0%).emitAs($light);
   catchEvent($kread).emitAs($stand);
   catchEvent($kdisc).emitAs($SHUT).emitAs($_DONE);
   catchEvent($kshut).emitAs($SHUT).emitAs($_DONE).setValue(0%).emitAs($light);
@@ -96,7 +94,6 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   catchEvent($done).emitAs($reset).setValue(100%).emitAs($s_std).emitAs($DONE).emitAs($_BUSY);
   
   catchEvent($booti).emitAs($STRT).emitAs($_SHUT).emitAs($_DONE);
-  catchEvent($disco).emitAs($v_dis);
   catchEvent($toggl).emitAs($v_tog).emitAs($v_lig).emitAs($_DONE);
   catchEvent($light).emitAs($v_lig).emitAs($_DONE);
   catchEvent($progr).emitAs($v_pro);
@@ -130,7 +127,6 @@ defSegment($porta, 0x00, { segment($PORTC, false); segment($PORTA, true); });
   var notification_state_pause = genSmoothOut(genLastEventParam($s_pau), &SMOOTING_TRANSITION);
 
   var value_booting = genSmoothOut(genLastEventParam($v_boo), &SMOOTING_TRANSITION);
-  var value_disconnected = genSmoothOut(genLastEventParam($v_dis), &SMOOTING_TRANSITION);
   var value_progress = genLastEventParam($v_pro);
   var value_color = genSmoothOut(genLastEventParam($v_col), &SMOOTING_TRANSITION);
   var value_brightness = genSmoothOut(mapValue(genLastEventParam($v_bri), 5%, 100%, 1%, 100%), &SMOOTING_TRANSITION);
