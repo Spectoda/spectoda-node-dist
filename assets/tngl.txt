@@ -390,16 +390,16 @@ defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24
         addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
       }).modifyBrightness(&value_booting);
       addLayer(0s, Infinity, {
-        scope(1s, Infinity, {
+        scope(2s, Infinity, {
           addLayer(0s, 10s, {
-            addDrawing(0s, 10s, animColorGradient5(6s, #000000, &value_color, &value_color, &value_color, &value_color, 100%, 100%).animFade(0.1s, &value_color, #ffffff).animFill(1s, #ffffff).animFade(2.9s, #ffffff, #000000));
+            addDrawing(0s, 10s, animColorGradient5(6s, #000000, &value_color, &value_color, &value_color, &value_color, 100%, 100%).animFade(0.1s, &value_color, #ffffff).animFill(1s, #ffffff).animFade(2.6s, #ffffff, #000000).animNone(Infinity));
             scaDrawing(0s, 10s, animLoadingBar(6s, #ffffff, #000000).animNone(Infinity));
           }).modifyFadeOut(1s);
           siftSegments({ segment($porta); }, {
             addLayer(10s, Infinity, {
               addDrawing(0s, Infinity, animLoadingBar(16s, #ffffff, #000000));
               subDrawing(0s, Infinity, animLoadingBar(29s, #ffffff, #000000));
-            }).modifyTimeSet(10s);
+            }).modifyFadeIn(1s).modifyTimeSet(10s);
           });
           siftSegments({ segment($front); }, {
             addDrawing(10s, Infinity, animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(2s));
@@ -437,10 +437,10 @@ defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24
     });
   // Blink animation
     siftSegments({ segment($porta); }, {
-      interactive<0x01>(0s, Infinity, $blink, {
+      interactive<0x08>(0s, Infinity, $blink, {
         scope(0s, 10s, {
-          scaDrawing(0s, 4s, animFade(0.5s, #ffffff, #000000).animFill(3s, #000000).animFade(0.5s, #000000, #ffffff));
-          setDrawing(1s, 2s, animFill(Infinity, #ffffff));
+          scaDrawing(0s, 4.2s, animFill(0.2s, #ffffff).animFade(0.5s, #ffffff, #000000).animFill(3s, #000000).animFade(0.5s, #000000, #ffffff).animNone(Infinity));
+          setDrawing(1.2s, 2s, animFade(0.1s, #000000, #ffffff).animFill(1.8s, #ffffff).animFade(0.1s, #ffffff, #000000).animNone(Infinity));
         });
       });
     });
