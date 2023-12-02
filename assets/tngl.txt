@@ -71,9 +71,9 @@ defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24
   // Booting conditions
   catchEvent($INIT).emitAs($stand).setValue(100%).emitAs($brigh).emitAs($front).setValue(#000fff).emitAs($color);
   catchEvent($INIT).emitAs($_STRT).emitAs($_DONE).emitAs($_PROC).emitAs($_BUSY);
-  catchEvent($BOOT).emitAs($stand).emitAs($STRT).emitAs($SHUT);
-  catchEvent($CONNE).emitAs($_STRT);
-  catchEvent($DISCO).emitAs($SHUT).emitAs($_DONE).setValue(0%).emitAs($light);
+  catchEvent($BOOT).emitAs($stand).emitAs($STRT).emitAs($SHUT).emitAs($_CONN);
+  catchEvent($CONNE).emitAs($_STRT).emitAs($CONN);
+  catchEvent($DISCO).emitAs($SHUT).emitAs($_DONE).emitAs($_CONN).setValue(0%).emitAs($light);
   catchEvent($kread).emitAs($stand);
   catchEvent($kdisc).emitAs($SHUT).emitAs($_DONE);
   catchEvent($kshut).emitAs($SHUT).emitAs($_DONE).setValue(0%).emitAs($light);
@@ -119,6 +119,8 @@ defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24
   catchEvent($SHUT).setValue(100%).emitAs($v_shu);
   catchEvent($_FILC).setValue(0%).emitAs($v_fch);
   catchEvent($FILC).setValue(100%).emitAs($v_fch);
+  catchEvent($_CONN).setValue(0%).emitAs($v_con);
+  catchEvent($CONN).setValue(100%).emitAs($v_con);
 
   catchEvent($reset).setValue(0%).emitAs($v_err).emitAs($v_dis).emitAs($v_boo).emitAs($v_prc).emitAs($v_shu).emitAs($s_tes).emitAs($s_std).emitAs($s_bus).emitAs($s_pau);
 
@@ -141,6 +143,7 @@ defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24
   var value_not_done = mapValue(value_done, 0%, 100%, 100%, 0%);
   var value_filchange = genSmoothOut(genLastEventParam($v_fch), &SMOOTING_TRANSITION);
   var value_not_filchange = mapValue(value_filchange, 0%, 100%, 100%, 0%);
+  var value_connected = genSmoothOut(genLastEventParam($v_con), &SMOOTING_TRANSITION);
 
   var progress_time = mapValue(value_progress, 0%, 100%, 1s, 100s);
   // User Animations on portal
@@ -420,8 +423,18 @@ defSegment($porta, 0x00, { slice($PORTC, 0px, 43px, 1px); slice($PORTA, 23px, 24
   // Disconnected
     siftSegments({ segment($front); }, {
       interactive<0x01>(0s, Infinity, $DISCO, {
-        scaDrawing(0s, 17s, animFade(1s, #ffffff, #171717).animFill(15s, #171717).animFade(1s, #171717, #ffffff));
-        addDrawing(0s, 17s, animNone(1s).animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(1s));
+        scaLayer(0s, 17s, {
+          addDrawing(0s, Infinity, animFade(1s, #ffffff, #171717).animFill(15s, #171717).animFade(1s, #171717, #ffffff));
+          addLayer(0s, Infinity, {
+            addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+          }).modifyBrightness(&value_connected);
+        });
+        addLayer(0s, 17s, {
+          addDrawing(0s, Infinity, animNone(1s).animPlasmaShot(1s, #c9c9c9, 25%).animPlasmaShot(-1s, #c9c9c9, 25%).animNone(1s));
+          subLayer(0s, Infinity, {
+            addDrawing(0s, Infinity, animFill(Infinity, #ffffff));
+          }).modifyBrightness(&value_connected);
+        });
       });
     });
   // Lightning Button
