@@ -9,6 +9,7 @@ const Spectoda_1 = require("./lib/spectoda-js/Spectoda");
 const Logging_1 = require("./lib/spectoda-js/Logging");
 const fs_1 = __importDefault(require("fs"));
 const functions_1 = require("./lib/spectoda-js/functions");
+const { exec } = require('child_process');
 const spectodaDevice = new Spectoda_1.Spectoda("nodebluetooth", true, true);
 exports.spectodaDevice = spectodaDevice;
 spectodaDevice.setDebugLevel(3);
@@ -96,8 +97,18 @@ spectodaDevice.on("connected", async () => {
             Logging_1.logging.error(`Error updating TNGL: ${error}`);
         }
     }
-    // // emit event that indicates the orange pi is connected
-    // await spectodaDevice.emitEvent("READY");
+    // restart moonraker-spectoda-connector so that the events about the state are emitted
+    exec('systemctl restart moonraker-spectoda-connector.service', (error, stdout, stderr) => {
+        if (error) {
+            Logging_1.logging.error(`Error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            Logging_1.logging.error(`Stderr: ${stderr}`);
+            return;
+        }
+        Logging_1.logging.info(`Stdout: ${stdout}`);
+    });
 });
 spectodaDevice.on("ota_progress", (percentages) => {
     Logging_1.logging.info("OTA progress", percentages);

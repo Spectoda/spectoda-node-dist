@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const communication_1 = require("./communication");
 const Logging_1 = require("./lib/spectoda-js/Logging");
 const functions_1 = require("./lib/spectoda-js/functions");
-const { exec } = require('child_process');
 require("./server");
 const fs_1 = __importDefault(require("fs"));
 async function main() {
@@ -22,17 +21,5 @@ async function main() {
             Logging_1.logging.error("Failed to connect to remembered device with MAC: " + mac);
         }
     }
-
-    exec('systemctl restart moonraker-spectoda-connector.service', (error, stdout, stderr) => {
-        if (error) {
-            Logging_1.logging.error(`Error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            Logging_1.logging.error(`Stderr: ${stderr}`);
-            return;
-        }
-        Logging_1.logging.info(`Stdout: ${stdout}`);
-    });
 }
 main();
